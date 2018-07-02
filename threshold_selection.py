@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import glob
 
-images = glob.glob('./output_images/undist_test*.jpg')
+images = glob.glob('./output_images/undist_*.jpg')
+
+#print(images)
 
 # Outputs absolute threshold value respective to the passed orientation
 def abs_sobel_thresh(abs_sobelx, abs_sobely, orient='x', thresh=(0, 255)):
@@ -72,8 +74,8 @@ for num, img in enumerate(images):
     ax5.set_title('Direction of Gradient')
     ax6.imshow(combined, cmap='gray')
     ax6.set_title('Combined Threshold')
-    f.savefig(str(num+1)+'.png')
-    plt.show()
+    f.savefig('./output_images/'+str(num+1)+'.png')
+    #plt.show()
 
-    mpimg.imsave('magnitude'+str(num+1)+'.png', mag_binary, cmap='gray')
-    mpimg.imsave('combined'+str(num+1)+'.png', combined, cmap='gray')
+    mpimg.imsave('./output_images/magnitude'+str(num+1)+'.png', mag_binary, cmap='gray')
+    mpimg.imsave('./output_images/combined'+str(num+1)+'.png', combined, cmap='gray')

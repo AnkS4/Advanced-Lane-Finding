@@ -9,7 +9,9 @@ dist_pickle = pickle.load(open('calibration.p', 'rb'))
 mtx = dist_pickle['mtx']
 dist = dist_pickle['dist']
 
-image = glob.glob('./test_images/test*.jpg')
+image = glob.glob('./test_images/*.jpg')
+
+#print(image)
 
 for img in image:
 	image = cv2.imread(img)

@@ -12,44 +12,61 @@ def warp_img(src, dst, img):
 #Manual calculation of image Size and fixed destination (same for all images)
 img_max = 1279, 719
 img_size = 1280, 720
-dst = np.float32([[200, img_max[1]], [1080, img_max[1]], [1080, 0], [200, 0]])
+dst = np.float32([[300, img_max[1]], [980, img_max[1]], [980, 0], [300, 0]])
 
-img = mpimg.imread('./output_images/combined8.png')
-src = np.float32([[225, img_max[1]], [1135, img_max[1]], [725, 450], [625, 450]])
+#Reading each image and selecting source points manually 
+path = './output_images/combined_straight_lines1.png'
+img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+src = np.float32([[210, img_max[1]], [1080, img_max[1]], [700, 455], [585, 455]])
 warped = warp_img(src, dst, img)
-mpimg.imsave('./output_images/perspective8.png', warped)
+name = './output_images/perspective' + path[24:]
+mpimg.imsave(name, warped, cmap='gray')
 
-img = mpimg.imread('./output_images/combined7.png')
-src = np.float32([[260, img_max[1]], [1150, img_max[1]], [715, 450], [615, 450]])
+path = './output_images/combined_straight_lines2.png'
+img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+src = np.float32([[225, img_max[1]], [1085, img_max[1]], [730, 475], [555, 475]])
 warped = warp_img(src, dst, img)
-mpimg.imsave('./output_images/perspective7.png', warped)
+name = './output_images/perspective' + path[24:]
+mpimg.imsave(name, warped, cmap='gray')
 
-img = mpimg.imread('./output_images/combined6.png')
-src = np.float32([[265, img_max[1]], [1130, img_max[1]], [715, 440], [620, 440]])
+path = './output_images/combined_test1.png'
+img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+src = np.float32([[265, img_max[1]], [1125, img_max[1]], [725, 460], [595, 460]])
 warped = warp_img(src, dst, img)
-mpimg.imsave('./output_images/perspective6.png', warped)
+name = './output_images/perspective' + path[24:]
+mpimg.imsave(name, warped, cmap='gray')
 
-img = mpimg.imread('./output_images/combined5.png')
-src = np.float32([[265, img_max[1]], [1160, img_max[1]], [740, 465], [605, 465]])
+path = './output_images/combined_test2.png'
+img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+src = np.float32([[300, img_max[1]], [1175, img_max[1]], [745, 480], [560, 480]])
 warped = warp_img(src, dst, img)
-mpimg.imsave('./output_images/perspective5.png', warped)
+name = './output_images/perspective' + path[24:]
+mpimg.imsave(name, warped, cmap='gray')
 
-img = mpimg.imread('./output_images/combined4.png')
-src = np.float32([[175, img_max[1]], [1120, img_max[1]], [735, 460], [600, 460]])
+path = './output_images/combined_test3.png'
+img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+src = np.float32([[245, img_max[1]], [1120, img_max[1]], [760, 480], [580, 480]])
 warped = warp_img(src, dst, img)
-mpimg.imsave('./output_images/perspective4.png', warped)
+name = './output_images/perspective' + path[24:]
+mpimg.imsave(name, warped, cmap='gray')
 
-img = mpimg.imread('./output_images/combined3.png')
-src = np.float32([[230, img_max[1]], [1095, img_max[1]], [710, 465], [580, 465]])
+path = './output_images/combined_test4.png'
+img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+src = np.float32([[280, img_max[1]], [1160, img_max[1]], [735, 465], [590, 465]])
 warped = warp_img(src, dst, img)
-mpimg.imsave('./output_images/perspective3.png', warped)
+name = './output_images/perspective' + path[24:]
+mpimg.imsave(name, warped, cmap='gray')
 
-img = mpimg.imread('./output_images/combined2.png')
-src = np.float32([[275, img_max[1]], [1120, img_max[1]], [725, 460], [590, 460]])
+path = './output_images/combined_test5.png'
+img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+src = np.float32([[180, img_max[1]], [1105, img_max[1]], [840, 530], [470, 530]])
 warped = warp_img(src, dst, img)
-mpimg.imsave('./output_images/perspective2.png', warped)
+name = './output_images/perspective' + path[24:]
+mpimg.imsave(name, warped, cmap='gray')
 
-img = mpimg.imread('./output_images/combined1.png')
-src = np.float32([[300, img_max[1]], [1140, img_max[1]], [680, 450], [570, 450]])
+path = './output_images/combined_test6.png'
+img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+src = np.float32([[270, img_max[1]], [1125, img_max[1]], [745, 465], [605, 465]])
 warped = warp_img(src, dst, img)
-mpimg.imsave('./output_images/perspective1.png', warped)
+name = './output_images/perspective' + path[24:]
+mpimg.imsave(name, warped, cmap='gray')

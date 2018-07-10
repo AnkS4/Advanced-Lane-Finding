@@ -12,16 +12,18 @@ The goals / steps of this project are the following:
 * Warp the detected lane boundaries back onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
-# I did the project as follows:
+## I did the project as follows:
 
-## 1. Camera Calibration
+### 1. Camera Calibration:
 
-## 2. Distortion Correction
+I used cv2.findChessboardCorners() for finding all the corners in the given image. I saved these corners from all the read images to imgpoints & using cv2.calibrateCamera() on them gives 'Camera Matrix', 'Distortion Coefficient', 'Rotational Vectors', 'Translation vectors'.
 
-## 3. Thresholding
+### 2. Distortion Correction
 
-## 4. Perspective Transform
+### 3. Thresholding
 
-## 5. Polynomial Fitting
+### 4. Perspective Transform
 
-## 6. Calculating Radius of Curvature
+### 5. Polynomial Fitting
+
+### 6. Calculating Radius of Curvature

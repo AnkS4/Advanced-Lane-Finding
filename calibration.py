@@ -21,13 +21,12 @@ for image in images:
 	ret, corners = cv2.findChessboardCorners(img, (9, 6), None)
 
 	if ret == True:
-		#print(image)
 		imgpoints.append(corners)
 		objpoints.append(objp)
 
 		img2 = cv2.drawChessboardCorners(img, (9, 6), corners, ret)
-		#plt.imshow(img2)
-		#plt.show()
+		name = './output_images/' + image[13:]
+		cv2.imwrite(name, img2)
 
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 

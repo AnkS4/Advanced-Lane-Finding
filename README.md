@@ -1,3 +1,8 @@
+[//]: # (Image References)
+
+[chess]: ./camera_cal/calibration3.jpg "Chessboard"
+[corners]: ./output_images/calibration3.jpg "Corners"
+
 # Advanced-Lane-Finding
 Finding lane lines on the road.
 
@@ -17,6 +22,10 @@ The goals / steps of this project are the following:
 ### 1. Camera Calibration:
 
 I used cv2.findChessboardCorners() for finding all the corners in the given image. I saved these corners from all the read images to imgpoints & using cv2.calibrateCamera() on them gives 'Camera Matrix', 'Distortion Coefficient', 'Rotational Vectors', 'Translation vectors'.
+
+| Chessboard Image          | Detected Corners               |
+|:-------------------------:|:------------------------------:|
+| ![Chessboard][chess]      | ![Chessboard Corners][corners] |
 
 ### 2. Distortion Correction
 

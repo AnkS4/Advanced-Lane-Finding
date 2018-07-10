@@ -4,6 +4,7 @@
 [corners]: ./output_images/calibration3.jpg "Corners"
 [dist]: ./test_images/test1.jpg "Distorted Image"
 [undist]: ./output_images/undist_test1.jpg "Undistorted Image"
+[thresh]: ./output_images/thresh_plot_straight_lines1.png 
 
 # Advanced-Lane-Finding
 Finding lane lines on the road.
@@ -34,7 +35,9 @@ One of the image with detected corners:
 ### 2. Distortion Correction
 
 I used **Camera Matrix** and **Distortion Coefficient** from previous output to undistort the image using *cv2.undistort()*.
-The images may seem to be similar after undistortion. The difference can be seem at the edges the image.
+The images may seem to be similar after undistortion. 
+
+The difference can be seem at the edges the image for the following example.
 
 Image after undistortion:
 
@@ -44,6 +47,10 @@ Image after undistortion:
 
 
 ### 3. Thresholding
+
+I tried various combinations from *S Channel* from HLS color space, *R Channel*, *G Channel*, *B Channel* from RGB color space, *Sobel Gradient in X*,  *Sobel Gradient in Y*, *Sobel Magnitude* & *Sobel Direction*.
+
+Among them *S Channel* gave me most accurate detection. I used **combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | (s_binary == 1)] = 1** combination for increasing the accuracy of the detection.
 
 ### 4. Perspective Transform
 

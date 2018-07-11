@@ -70,7 +70,7 @@ for i in images:
 	right_lane_inds = ((nonzerox > (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + right_fit[2] - margin)) & (nonzerox < (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + right_fit[2] + margin)))
 
 	# Generate x and y values for plotting
-	ploty = np.linspace(0, img.shape[0]-1, img.shape[0] )
+	ploty = np.linspace(0, img.shape[0]-1, img.shape[0])
 	left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
 	right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]
 
@@ -98,3 +98,33 @@ for i in images:
 	
 	name = './output_images/fit_lane' + i[27:]
 	mpimg.imsave(name, result)
+
+	leftx = left_fitx[::-1]  # Reverse to match top-to-bottom in y
+	rightx = right_fitx[::-1]  # Reverse to match top-to-bottom in y
+
+	# Fit a second order polynomial to pixel positions in each lane line
+	left_fit = np.polyfit(ploty, leftx, 2)
+	left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
+	right_fit = np.polyfit(ploty, rightx, 2)
+	right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]
+
+	# Define y-value where we want radius of curvature
+	# Choose the maximum y-value, corresponding to the bottom of the image
+	y_eval = np.max(ploty)
+	#Radius of curvature in pixels
+	left_curverad = ((1 + (2*left_fit[0]*y_eval + left_fit[1])**2)**1.5) / np.absolute(2*left_fit[0])
+	right_curverad = ((1 + (2*right_fit[0]*y_eval + right_fit[1])**2)**1.5) / np.absolute(2*right_fit[0])
+
+	# Define conversions in x and y from pixels space to meters
+	ym_per_pix = 30/720 # meters per pixel in y dimension
+	xm_per_pix = 3.7/700 # meters per pixel in x dimension
+
+	# Fit new polynomials to x,y in world space
+	left_fit_cr = np.polyfit(ploty*ym_per_pix, leftx*xm_per_pix, 2)
+	right_fit_cr = np.polyfit(ploty*ym_per_pix, rightx*xm_per_pix, 2)
+	# Calculate the new radii of curvature
+	left_curverad = ((1 + (2*left_fit_cr[0]*y_eval*ym_per_pix + left_fit_cr[1])**2)**1.5) / np.absolute(2*left_fit_cr[0])
+	right_curverad = ((1 + (2*right_fit_cr[0]*y_eval*ym_per_pix + right_fit_cr[1])**2)**1.5) / np.absolute(2*right_fit_cr[0])
+
+	# Radius of curvature in meters
+	print('Curvature for', i[16:], 'is :', left_curverad, 'm', right_curverad, 'm')

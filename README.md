@@ -7,6 +7,7 @@
 [thresh]: ./output_images/thresh_plot_straight_lines1.png
 [img]: ./output_images/combined_test1.png
 [imgp]: ./output_images/perspective_test1.png
+[fit]: ./output_images/fit_lane_test1.png
 
 # Advanced-Lane-Finding
 Finding lane lines on the road.
@@ -72,5 +73,14 @@ Perspective output from one of the image:
 
 
 ### 5. Polynomial Fitting
+
+I used the output from perspective for fitting the lane. Using histogram of the perspective image, I detected the left & right base using *np.argmax()*. Starting from that initial points left and right points are collected by deciding specific number of windows. Each window has left and right points correspoding to a lane. Then, polynomial corresponding to each lane is obtained by *np.polyfit()*, it's is used for fitting the lane.
+
+Example of lane fitting:
+
+|  Original Image             |  Perspective Image          |  Lane Fit                      |
+|:---------------------------:|:---------------------------:|:------------------------------:|
+| ![Original Image][dist]     | ![Perspective Image][imgp]  | ![Lane Fit ][fit]              |
+
 
 ### 6. Calculating Radius of Curvature

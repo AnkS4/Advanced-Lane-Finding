@@ -56,17 +56,6 @@ for i in images:
 	left_lane_inds = np.concatenate(left_lane_inds)
 	right_lane_inds = np.concatenate(right_lane_inds)
 
-	leftx = nonzerox[left_lane_inds]
-	lefty = nonzeroy[left_lane_inds] 
-	rightx = nonzerox[right_lane_inds]
-	righty = nonzeroy[right_lane_inds] 
-
-	left_fit = np.polyfit(lefty, leftx, 2)
-	right_fit = np.polyfit(righty, rightx, 2)
-
-	left_lane_inds = ((nonzerox > (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + left_fit[2] - margin)) & (nonzerox < (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + left_fit[2] + margin)))
-	right_lane_inds = ((nonzerox > (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + right_fit[2] - margin)) & (nonzerox < (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + right_fit[2] + margin)))
-
 	# Extract left and right line pixel positions
 	leftx = nonzerox[left_lane_inds]
 	lefty = nonzeroy[left_lane_inds] 
@@ -76,6 +65,9 @@ for i in images:
 	# Fit a second order polynomial to each
 	left_fit = np.polyfit(lefty, leftx, 2)
 	right_fit = np.polyfit(righty, rightx, 2)
+
+	left_lane_inds = ((nonzerox > (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + left_fit[2] - margin)) & (nonzerox < (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + left_fit[2] + margin)))
+	right_lane_inds = ((nonzerox > (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + right_fit[2] - margin)) & (nonzerox < (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + right_fit[2] + margin)))
 
 	# Generate x and y values for plotting
 	ploty = np.linspace(0, img.shape[0]-1, img.shape[0] )
@@ -106,10 +98,3 @@ for i in images:
 	
 	name = './output_images/fit_lane' + i[27:]
 	mpimg.imsave(name, result)
-
-	'''
-	plt.imshow(result)
-	plt.plot(left_fitx, ploty, color='yellow')
-	plt.plot(right_fitx, ploty, color='yellow')
-	plt.show()
-	'''

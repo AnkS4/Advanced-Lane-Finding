@@ -66,9 +66,9 @@ For perspective/birds-eye view transform, I manually selected the co-ordinates f
 
 Perspective output from one of the image:
 
-|  Original Image             |  Perspective Image             |
-|:---------------------------:|:------------------------------:|
-| ![Original Image][img]      | ![Perspective Image][imgp]     |
+|  Original Image             |  Undistorted Image             |  Thresholded Image          |  Perspective Image             |
+|:---------------------------:|:------------------------------:|:---------------------------:|:------------------------------:|
+| ![Original Image][dist]     | ![Undistorted Image][undist]   | ![Thresholded Image][img]   | ![Perspective Image][imgp]     |
 
 
 ### 5. Polynomial Fitting

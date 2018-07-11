@@ -4,7 +4,9 @@
 [corners]: ./output_images/calibration3.jpg "Corners"
 [dist]: ./test_images/test1.jpg "Distorted Image"
 [undist]: ./output_images/undist_test1.jpg "Undistorted Image"
-[thresh]: ./output_images/thresh_plot_straight_lines1.png 
+[thresh]: ./output_images/thresh_plot_straight_lines1.png
+[img]: ./output_images/combined_test1.png
+[imgp]: ./output_images/perspective_test1.png
 
 # Advanced-Lane-Finding
 Finding lane lines on the road.
@@ -50,9 +52,24 @@ Image after undistortion:
 
 I tried various combinations from *S Channel* from HLS color space, *R Channel*, *G Channel*, *B Channel* from RGB color space, *Sobel Gradient in X*,  *Sobel Gradient in Y*, *Sobel Magnitude* & *Sobel Direction*.
 
-Among them *S Channel* gave me most accurate detection. I used **combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | (s_binary == 1)] = 1** combination for increasing the accuracy of the detection.
+Among them *S Channel* gave me the most accurate detection. I used **combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | (s_binary == 1)] = 1** combination for increasing the accuracy of the detection.
+
+One of the threshold plot:
+
+|  Threshold Plot             |  
+|:---------------------------:|
+| ![Threshold Plot][thresh]   |
 
 ### 4. Perspective Transform
+
+For perspective/birds-eye view transform, I manually selected the co-ordinates for each image from thresholding output.
+
+Perspective output from one of the image:
+
+|  Original Image             |  Perspective Image             |
+|:---------------------------:|:------------------------------:|
+| ![Original Image][img]      | ![Perspective Image][imgp]     |
+
 
 ### 5. Polynomial Fitting
 

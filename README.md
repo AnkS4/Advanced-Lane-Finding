@@ -84,3 +84,20 @@ Example of lane fitting:
 
 
 ### 6. Calculating Radius of Curvature
+
+The radius of curvature in pixels is calculated using *left_curverad = ((1 + (2*left_fit[0]*y_eval + left_fit[1])^2)^1.5) / np.absolute(2*left_fit[0])*, *right_curverad = ((1 + (2*right_fit[0]*y_eval + right_fit[1])^2)^1.5) / np.absolute(2*right_fit[0])* 
+
+Later, it is converted to meters.
+
+Output for the images is below:
+
+| Image Name                  | Left Lane Curvature         | Right Lane Curvature           |
+|:---------------------------:|:---------------------------:|:------------------------------:|
+| perspective_test6           | 3234.5940733240163 m        | 983.7502369781216 m            |
+| perspective_test5           | 27420.065667106228 m        | 2625.5409849369294 m           |
+| perspective_test4           | 4448.201716046439 m         | 1209.9983366753997 m           |
+| perspective_test1           | 920.1252941991785 m         | 2322.9544873268974 m           |
+| perspective_straight_lines2 | 1575.8250305220645 m        | 14180.48921341102 m            |
+| perspective_straight_lines1 | 2577.6586892197365 m        | 225.41822384915173 m           |
+| perspective_test3           | 3378.061657403786 m         | 1094.8882103375329 m           |
+| perspective_test2           | 2088.473302866544 m         | 372.87185571782027 m           |

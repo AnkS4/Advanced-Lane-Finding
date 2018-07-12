@@ -3,8 +3,10 @@ import numpy as np
 import matplotlib.image as mpimg 
 import matplotlib.pyplot as plt 
 import glob
+import pickle
 
 images = glob.glob('./output_images/perspective*.png')
+lane_pickle = {}
 
 for i in images:
 	img = cv2.imread(i, cv2.IMREAD_GRAYSCALE)
@@ -74,6 +76,11 @@ for i in images:
 	left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
 	right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]
 
+	#Dump pickle for left_fitx, right_fitx
+	lane_pickle['l' + i[28:-4]] = left_fitx
+	lane_pickle['r' + i[28:-4]] = right_fitx
+	pickle.dump(lane_pickle, open('./lane.p', 'wb'))
+
 	# Create an image to draw on and an image to show the selection window
 	out_img = np.dstack((img, img, img))*255
 	window_img = np.zeros_like(out_img)
@@ -98,6 +105,8 @@ for i in images:
 	
 	name = './output_images/fit_lane' + i[27:]
 	mpimg.imsave(name, result)
+	name = './output_images/lane' + i[27:]
+	mpimg.imsave(name, window_img)
 
 	leftx = left_fitx[::-1]  # Reverse to match top-to-bottom in y
 	rightx = right_fitx[::-1]  # Reverse to match top-to-bottom in y
@@ -128,3 +137,4 @@ for i in images:
 
 	# Radius of curvature in meters
 	print('Curvature for', i[16:], 'is :', left_curverad, 'm', right_curverad, 'm')
+#print(lane_pickle)

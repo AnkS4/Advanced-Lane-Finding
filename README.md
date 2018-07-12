@@ -8,6 +8,14 @@
 [img]: ./output_images/combined_test1.png
 [imgp]: ./output_images/perspective_test1.png
 [fit]: ./output_images/fit_lane_test1.png
+[l1]: ./output_images/fit_lane_straight_lines1.png
+[l2]: ./output_images/fit_lane_straight_lines2.png
+[l3]: ./output_images/fit_lane_test1.png
+[l4]: ./output_images/fit_lane_test2.png
+[l5]: ./output_images/fit_lane_test3.png
+[l6]: ./output_images/fit_lane_test4.png
+[l7]: ./output_images/fit_lane_test5.png
+[l8]: ./output_images/fit_lane_test6.png
 
 # Advanced-Lane-Finding
 Finding lane lines on the road.
@@ -93,11 +101,11 @@ Output for the images is below:
 
 | Image Name                  | Left Lane Curvature         | Right Lane Curvature           |
 |:---------------------------:|:---------------------------:|:------------------------------:|
-| perspective_test6           | 3234.5940733240163 m        | 983.7502369781216 m            |
-| perspective_test5           | 27420.065667106228 m        | 2625.5409849369294 m           |
-| perspective_test4           | 4448.201716046439 m         | 1209.9983366753997 m           |
-| perspective_test1           | 920.1252941991785 m         | 2322.9544873268974 m           |
-| perspective_straight_lines2 | 1575.8250305220645 m        | 14180.48921341102 m            |
-| perspective_straight_lines1 | 2577.6586892197365 m        | 225.41822384915173 m           |
-| perspective_test3           | 3378.061657403786 m         | 1094.8882103375329 m           |
-| perspective_test2           | 2088.473302866544 m         | 372.87185571782027 m           |
+| ![Image 1][l1]              | 2577.6586892197365 m        | 225.41822384915173 m           |
+| ![Image 2][l2]              | 1575.8250305220645 m        | 14180.48921341102 m            |
+| ![Image 3][l3]              | 920.1252941991785 m         | 2322.9544873268974 m           |
+| ![Image 4][l4]              | 2088.473302866544 m         | 372.87185571782027 m           |
+| ![Image 5][l5]              | 3378.061657403786 m         | 1094.8882103375329 m           |
+| ![Image 6][l6]              | 4448.201716046439 m         | 1209.9983366753997 m           |
+| ![Image 7][l7]              | 27420.065667106228 m        | 2625.5409849369294 m           |
+| ![Image 8][l8]              | 3234.5940733240163 m        | 983.7502369781216 m            |

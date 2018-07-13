@@ -18,6 +18,22 @@
 [l8]: ./output_images/fit_lane_test6.png
 [org]: ./output_images/undist_test4.jpg
 [warp]: ./output_images/line_plot_test4.png
+[test1]: ./test_images/straight_lines1.jpg
+[test2]: ./test_images/straight_lines2.jpg
+[test3]: ./test_images/test1.jpg
+[test4]: ./test_images/test2.jpg
+[test5]: ./test_images/test3.jpg
+[test6]: ./test_images/test4.jpg
+[test7]: ./test_images/test5.jpg
+[test8]: ./test_images/test6.jpg
+[out1]: ./output_images/line_plot2_straight_lines1.png
+[out2]: ./output_images/line_plot2_straight_lines2.png
+[out3]: ./output_images/line_plot2_test1.png
+[out4]: ./output_images/line_plot2_test2.png
+[out5]: ./output_images/line_plot2_test3.png
+[out6]: ./output_images/line_plot2_test4.png
+[out7]: ./output_images/line_plot2_test5.png
+[out8]: ./output_images/line_plot2_test6.png
 
 # Advanced-Lane-Finding
 Finding lane lines on the road.
@@ -120,3 +136,17 @@ One of the image with warped lane on top of it:
 |:---------------------------:|:------------------------------:|
 | ![Original Image][org]      | ![Warped Image][warp]          |
 
+### 8. Estimating lane curvature and vehicle position
+
+All of the test images with visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position:
+
+| Original Image                 |  Final Image Output            |
+|:------------------------------:|:------------------------------:|
+| ![Original Image][test1]       | ![Output Image][out1]          |
+| ![Original Image][test2]       | ![Output Image][out2]          |
+| ![Original Image][test3]       | ![Output Image][out3]          |
+| ![Original Image][test4]       | ![Output Image][out4]          |
+| ![Original Image][test5]       | ![Output Image][out5]          |
+| ![Original Image][test6]       | ![Output Image][out6]          |
+| ![Original Image][test7]       | ![Output Image][out7]          |
+| ![Original Image][test8]       | ![Output Image][out8]          |

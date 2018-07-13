@@ -16,6 +16,8 @@
 [l6]: ./output_images/fit_lane_test4.png
 [l7]: ./output_images/fit_lane_test5.png
 [l8]: ./output_images/fit_lane_test6.png
+[org]: ./output_images/undist_test4.jpg
+[warp]: ./output_images/line_plot_test4.png
 
 # Advanced-Lane-Finding
 Finding lane lines on the road.
@@ -109,3 +111,12 @@ Output for the images is below:
 | ![Image 6][l6]              | 4448.201716046439 m         | 1209.9983366753997 m           |
 | ![Image 7][l7]              | 27420.065667106228 m        | 2625.5409849369294 m           |
 | ![Image 8][l8]              | 3234.5940733240163 m        | 983.7502369781216 m            |
+
+### 7. Warping the lane on the original image
+
+One of the image with warped lane on top of it:
+
+|  Original Image             |  Image with warped lane        |
+|:---------------------------:|:------------------------------:|
+| ![Original Image][org]      | ![Warped Image][warp]          |
+

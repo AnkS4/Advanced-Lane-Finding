@@ -5,6 +5,12 @@ import matplotlib.pyplot as plt
 import glob
 import pickle
 
+# Define conversions in x and y from pixels space to meters
+ym_per_pix = 30/720 # meters per pixel in y dimension
+xm_per_pix = 3.7/700 # meters per pixel in x dimension
+
+ymax = 719
+
 images = glob.glob('./output_images/perspective*.png')
 lane_pickle = {}
 
@@ -79,7 +85,15 @@ for i in images:
 	#Dump pickle for left_fitx, right_fitx
 	lane_pickle['l' + i[28:-4]] = left_fitx
 	lane_pickle['r' + i[28:-4]] = right_fitx
-	pickle.dump(lane_pickle, open('./lane.p', 'wb'))
+
+	left_center = left_fit[0]*ymax**2 + left_fit[1]*ymax + left_fit[2]
+	right_center = right_fit[0]*ymax**2 + right_fit[1]*ymax + right_fit[2]
+	lane_center = (left_center + right_center)/2
+	camera_center = img.shape[1]/2
+	lane_distance = (camera_center - lane_center) * ym_per_pix
+
+	#Dump pickle for lane_distance
+	lane_pickle['dist' + i[28:-4]] = lane_distance
 
 	# Create an image to draw on and an image to show the selection window
 	out_img = np.dstack((img, img, img))*255
@@ -124,10 +138,6 @@ for i in images:
 	left_curverad = ((1 + (2*left_fit[0]*y_eval + left_fit[1])**2)**1.5) / np.absolute(2*left_fit[0])
 	right_curverad = ((1 + (2*right_fit[0]*y_eval + right_fit[1])**2)**1.5) / np.absolute(2*right_fit[0])
 
-	# Define conversions in x and y from pixels space to meters
-	ym_per_pix = 30/720 # meters per pixel in y dimension
-	xm_per_pix = 3.7/700 # meters per pixel in x dimension
-
 	# Fit new polynomials to x,y in world space
 	left_fit_cr = np.polyfit(ploty*ym_per_pix, leftx*xm_per_pix, 2)
 	right_fit_cr = np.polyfit(ploty*ym_per_pix, rightx*xm_per_pix, 2)
@@ -137,4 +147,7 @@ for i in images:
 
 	# Radius of curvature in meters
 	print('Curvature for', i[16:], 'is :', left_curverad, 'm', right_curverad, 'm')
-#print(lane_pickle)
+	print('Distance of the vehicle from center is :', lane_distance, 'm')
+	lane_pickle['lc' + i[28:-4]] = left_curverad
+	lane_pickle['rc' + i[28:-4]] = right_curverad
+	pickle.dump(lane_pickle, open('./lane.p', 'wb'))

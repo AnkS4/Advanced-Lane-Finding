@@ -12,7 +12,6 @@ ploty = np.linspace(0, 719, 720)
 
 def plot_img(i, src):
 	#Read lane-only image
-	#i = './output_images/lane_straight_lines1.png'
 	img = mpimg.imread(i)
 	#Read undistorted image
 	undist_path = './output_images/undist_' + i[21:-4] + '.jpg'
@@ -21,7 +20,12 @@ def plot_img(i, src):
 	#Read pickle
 	left_fitx = lane_pickle['l' + undist_path[23:-4]]
 	right_fitx = lane_pickle['r' + undist_path[23:-4]]
-	#src = np.float32([[210, img_max[1]], [1080, img_max[1]], [700, 455], [585, 455]])
+	l_roc = lane_pickle['lc' + undist_path[23:-4]]
+	r_roc = lane_pickle['rc' + undist_path[23:-4]]
+	roc = round((l_roc + r_roc)/2, 2)
+	dist = round(lane_pickle['dist' + undist_path[23:-4]], 2)
+	abs_dist = abs(dist)
+
 	warp_zero = np.zeros_like(undist).astype(np.uint8)
 
 	# Recast the x and y points into usable format for cv2.fillPoly()
@@ -35,9 +39,22 @@ def plot_img(i, src):
 	Minv = cv2.getPerspectiveTransform(dst, src)
 	newwarp = cv2.warpPerspective(warp_zero, Minv, (img.shape[1], img.shape[0])) 
 	result = cv2.addWeighted(undist, 1, newwarp, 0.3, 0)
-	
-	#Save result
+
 	name = './output_images/line_plot_' + i[21:]
+	mpimg.imsave(name, result)
+	
+	#Put the text on the image
+	text = 'Radius of curvature = ' + str(roc) + 'm'
+	cv2.putText(result, text, org=(0, 50), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+	if dist > 0:
+		text2 = 'Vehicle is '+ str(abs_dist) + 'm right from the center'
+	elif dist < 0:
+		text2 = 'Vehicle is '+ str(abs_dist) + 'm left from the center'
+	else:
+		text2 = 'Vehicle is exactly at the center'
+	cv2.putText(result, text2, org=(0, 100), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+
+	name = './output_images/line_plot2_' + i[21:]
 	mpimg.imsave(name, result)
 
 #Image 1

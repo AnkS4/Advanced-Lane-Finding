@@ -47,6 +47,10 @@ def process_img(img):
 	dist_pickle = pickle.load(open('calibration.p', 'rb'))
 	mtx = dist_pickle['mtx']
 	dist = dist_pickle['dist']
+
+	# Define conversions in x and y from pixels space to meters
+	ym_per_pix = 30/720 # meters per pixel in y dimension
+	xm_per_pix = 3.7/700 # meters per pixel in x dimension
 	
 	out = cv2.undistort(img, mtx, dist, None, mtx)
 	
@@ -92,7 +96,7 @@ def process_img(img):
 
 	#Perform perspective transform
 	M = cv2.getPerspectiveTransform(src, dst)
-	warped = cv2.warpPerspective(out, M, img_size, flags=cv2.INTER_LINEAR)
+	warped = cv2.warpPerspective(combined, M, img_size, flags=cv2.INTER_LINEAR)
 
     #Start lane fitting
 	histogram = np.sum(warped[warped.shape[0]//2:, :], axis=0)
@@ -100,7 +104,6 @@ def process_img(img):
 	mid = np.int(histogram.shape[0]//2)
 	leftx_base = np.argmax(histogram[:mid])
 	rightx_base = np.argmax(histogram[mid:]) + mid
-	print(leftx_base, rightx_base)
 
 	nwindows = 9
 	window_height = np.int(warped.shape[0]//nwindows)
@@ -161,8 +164,8 @@ def process_img(img):
 	left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
 	right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]
 
-	left_center = left_fit[0]*ymax**2 + left_fit[1]*ymax + left_fit[2]
-	right_center = right_fit[0]*ymax**2 + right_fit[1]*ymax + right_fit[2]
+	left_center = left_fit[0]*img_size[1]**2 + left_fit[1]*img_size[1] + left_fit[2]
+	right_center = right_fit[0]*img_size[1]**2 + right_fit[1]*img_size[1] + right_fit[2]
 	lane_center = (left_center + right_center)/2
 	camera_center = warped.shape[1]/2
 	lane_distance = (camera_center - lane_center) * ym_per_pix
@@ -210,9 +213,6 @@ def process_img(img):
 	Minv = cv2.getPerspectiveTransform(dst, src)
 	newwarp = cv2.warpPerspective(warp_zero, Minv, (img.shape[1], img.shape[0])) 
 	result = cv2.addWeighted(out, 1, newwarp, 0.3, 0)
-
-	name = './output_images/line_plot_' + i[21:]
-	mpimg.imsave(name, result)
 	
 	#Put the text on the image
 	text = 'Radius of curvature = ' + str(roc) + 'm'

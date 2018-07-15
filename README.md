@@ -150,3 +150,17 @@ All of the test images with visual display of the lane boundaries and numerical 
 | ![Original Image][test6]       | ![Output Image][out6]          |
 | ![Original Image][test7]       | ![Output Image][out7]          |
 | ![Original Image][test8]       | ![Output Image][out8]          |
+
+### Discussion
+
+#### Briefly discuss any problems / issues you faced in your implementation of this project. Where will your pipeline likely fail? What could you do to make it more robust?
+
+Selecting right number of color channels, reading/writing appropriate color channels was issue at the start. Such as reading image using *mpimg.imread()*, *cv2.imread()*, *mpimg.imsave(), *cv2.imwrite()*. Reading grayscale image using cv2 was an issue for me, then I used *cv2.imread(i, cv2.IMREAD_GRAYSCALE)* for reading grayscale image.
+
+Selecting *color spaces*, *threshold limit* for image pipeline and *source points* for the video warping was experimental, I had to manually check many parameters, values for optimal output.
+
+I also didn't know which lane curvature measurement to put on the image left or right. Some images had significant difference between the lane. So, I put the average of left and right lane curvature as measurement.
+
+On video pipeline, I faced errors like *TypeError("expected non-empty vector for x")*. One of the frame was not having detected right lane in warped lane, so *np.polyfit()* couldn't fit the right lane.
+
+

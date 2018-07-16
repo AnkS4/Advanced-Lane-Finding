@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 import pickle
 from moviepy.editor import VideoFileClip
 
-i = 0
-
 def abs_sobel_thresh(abs_sobelx, abs_sobely, orient='x', thresh=(0, 255)):
     if orient == 'x':
         scaled_sobel = np.uint8(255*abs_sobelx/np.max(abs_sobelx))
@@ -90,8 +88,7 @@ def process_img(img):
 
 	mid = np.int(histogram.shape[0]//2)
 	leftx_base = np.argmax(histogram[:mid])
-	rightx_base = np.argmax(histogram[mid+1:]) + mid
-	print(leftx_base, rightx_base)
+	rightx_base = np.argmax(histogram[mid:]) + mid
 
 	nwindows = 9
 	window_height = np.int(warped.shape[0]//nwindows)
@@ -103,7 +100,7 @@ def process_img(img):
 	leftx_current = leftx_base
 	rightx_current = rightx_base
 
-	margin = 50
+	margin = 100
 	minpix = 50
 
 	left_lane_inds = []

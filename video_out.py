@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import pickle
 from moviepy.editor import VideoFileClip
 
+i = 0
+
 def abs_sobel_thresh(abs_sobelx, abs_sobely, orient='x', thresh=(0, 255)):
     if orient == 'x':
         scaled_sobel = np.uint8(255*abs_sobelx/np.max(abs_sobelx))
@@ -73,26 +75,11 @@ def process_img(img):
 	combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | (s_binary == 1)] = 1
 
 	img_size = out.shape[1], out.shape[0]
-	lower_width = 0.76
-	mid_width = 0.08
-	height = 0.62
-	lower_trim = 0.935
 
-	#Select 4 source points
-	pt1 = [img_size[0]*(0.5-mid_width/2), img_size[1]*height]
-	pt2 = [img_size[0]*(0.5+mid_width/2), img_size[1]*height]
-	pt3 = [img_size[0]*(0.5+lower_width/2), img_size[1]*lower_trim] 
-	pt4 = [img_size[0]*(0.5-lower_width/2), img_size[1]*lower_trim]
-	src = np.float32([pt1, pt2, pt3, pt4])
-
-	offset = img_size[1]*0.25
-	#Select 4 destination points
-	pt1 = [offset, 0]
-	pt2 = [img_size[0]-offset, 0]
-	pt3 = [img_size[0]-offset, img_size[1]]
-	pt4 = [offset, img_size[1]]
-
-	dst = np.float32([pt1, pt2, pt3, pt4])
+	offset = 50
+	offset2 = 200
+	src = np.float32([[offset, 720], [1280-offset, 720], [680, 360], [600, 360]])
+	dst = np.float32([[offset2, 720], [1280-offset2, 720], [1280-offset2, 0], [offset2, 0]])
 
 	#Perform perspective transform
 	M = cv2.getPerspectiveTransform(src, dst)
@@ -103,7 +90,8 @@ def process_img(img):
 
 	mid = np.int(histogram.shape[0]//2)
 	leftx_base = np.argmax(histogram[:mid])
-	rightx_base = np.argmax(histogram[mid:]) + mid
+	rightx_base = np.argmax(histogram[mid+1:]) + mid
+	print(leftx_base, rightx_base)
 
 	nwindows = 9
 	window_height = np.int(warped.shape[0]//nwindows)
@@ -115,7 +103,7 @@ def process_img(img):
 	leftx_current = leftx_base
 	rightx_current = rightx_base
 
-	margin = 100
+	margin = 50
 	minpix = 50
 
 	left_lane_inds = []
@@ -172,7 +160,6 @@ def process_img(img):
 
 	# Create an image to draw on and an image to show the selection window
 	out_img = np.dstack((warped, warped, warped))*255
-	window_img = np.zeros_like(out_img)
 
 	leftx = left_fitx[::-1]  # Reverse to match top-to-bottom in y
 	rightx = right_fitx[::-1]  # Reverse to match top-to-bottom in y

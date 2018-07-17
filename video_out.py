@@ -74,9 +74,8 @@ def process_img(img):
 
 	img_size = out.shape[1], out.shape[0]
 
-	offset = 50
-	offset2 = 200
-	src = np.float32([[offset, 720], [1280-offset, 720], [680, 360], [600, 360]])
+	offset = 200
+	src = np.float32([[offset, 720], [1280-offset, 720], [680, 300], [600, 300]])
 	dst = np.float32([[offset2, 720], [1280-offset2, 720], [1280-offset2, 0], [offset2, 0]])
 
 	#Perform perspective transform

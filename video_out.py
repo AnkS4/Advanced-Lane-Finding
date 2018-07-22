@@ -70,15 +70,15 @@ def process_img(img):
 	abs_sobelx = np.absolute(sobelx) #Absolute value of X derivative
 	abs_sobely = np.absolute(sobely) #Absolute value of Y derivative
 
-	s_binary = s_threshold(s, thresh=(120, 255))
-	v_binary = v_threshold(v, thresh=(180, 255))
+	s_binary = s_threshold(s, thresh=(130, 255))
+	v_binary = v_threshold(v, thresh=(210, 255))
 	gradx = abs_sobel_thresh(abs_sobelx, abs_sobely, orient='x', thresh=(50, 255))
 	grady = abs_sobel_thresh(abs_sobelx, abs_sobely,  orient='y', thresh=(50, 255))
 	mag_binary = mag_thresh(sobelx, sobely, thresh=(75, 255))
 	dir_binary = dir_threshold(abs_sobelx, abs_sobely, thresh=(0.6, 1.3))
 
 	combined = np.zeros_like(dir_binary)
-	combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | (s_binary == 1) | (v_binary == 1)] = 1
+	combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | ((s_binary == 1) & (v_binary == 1))] = 1
 
 	img_size = out.shape[1], out.shape[0]
 
@@ -109,7 +109,7 @@ def process_img(img):
 	rightx_current = rightx_base
 
 	margin = 100
-	minpix = 100
+	minpix = 50
 
 	left_lane_inds = []
 	right_lane_inds = []

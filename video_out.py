@@ -70,7 +70,11 @@ def process_img(img):
 	abs_sobelx = np.absolute(sobelx) #Absolute value of X derivative
 	abs_sobely = np.absolute(sobely) #Absolute value of Y derivative
 
-	s_binary = s_threshold(s, thresh=(130, 255))
+	r_binary = threshold(r, thresh=(215, 255))
+	b_binary = threshold(b, thresh=(150, 255))
+	s_binary = threshold(s, thresh=(90, 255))
+
+	#s_binary = s_threshold(s, thresh=(130, 255))
 	v_binary = v_threshold(v, thresh=(210, 255))
 	gradx = abs_sobel_thresh(abs_sobelx, abs_sobely, orient='x', thresh=(50, 255))
 	grady = abs_sobel_thresh(abs_sobelx, abs_sobely,  orient='y', thresh=(50, 255))
@@ -78,13 +82,17 @@ def process_img(img):
 	dir_binary = dir_threshold(abs_sobelx, abs_sobely, thresh=(0.6, 1.3))
 
 	combined = np.zeros_like(dir_binary)
-	combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | (v_binary == 1) | (s_binary == 1)] = 1
+	#combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | (v_binary == 1) | (s_binary == 1)] = 1
+	combined[((gradx==1) & (grady==1)) | (r_binary==1) | ((b_binary==1) & (s_binary==1))] = 1
 
 	img_size = out.shape[1], out.shape[0]
 
-	offset = 200
-	src = np.float32([[offset, img_size[1]-25], [img_size[0]-offset, img_size[1]-25], [750, 470], [540, 470]])
-	dst = np.float32([[offset, img_size[1]], [img_size[0]-offset, img_size[1]], [img_size[0]-offset, 0], [offset, 0]])
+	offset = 100
+	offset2 = 200
+	midh = img_size[0]/2
+	topv = img_size[1]*(2/3)
+	src = np.float32([[offset, img_size[1]], [img_size[0]-offset, img_size[1]], [midh+offset, topv], [midh-offset, topv]])
+	dst = np.float32([[offset2, img_size[1]], [img_size[0]-offset2, img_size[1]], [img_size[0]-offset2, 0], [offset2, 0]])
 
 	#Perform perspective transform
 	M = cv2.getPerspectiveTransform(src, dst)

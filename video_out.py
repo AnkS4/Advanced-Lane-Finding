@@ -59,10 +59,14 @@ def process_img(img):
 	
 	out = cv2.undistort(img, mtx, dist, None, mtx)
 	
-	hls = cv2.cvtColor(out, cv2.COLOR_BGR2HLS)
+	r = out[:, :, 0]
+	hls = cv2.cvtColor(out, cv2.COLOR_RGB2HLS)
+	h = hls[:, :, 0]
 	s = hls[:, :, 2]
-	hsv = cv2.cvtColor(out, cv2.COLOR_BGR2HSV)
-	v = hsv[:, :, 2]
+	lab = cv2.cvtColor(out, cv2.COLOR_RGB2LAB)
+	b = lab[:, :, 2]
+	luv = cv2.cvtColor(out, cv2.COLOR_RGB2LUV)
+	l = luv[:, :, 0]
 
 	k = 15
 	sobelx = cv2.Sobel(s, cv2.CV_64F, 1, 0, ksize=k) # Derivative in X direction
@@ -70,29 +74,27 @@ def process_img(img):
 	abs_sobelx = np.absolute(sobelx) #Absolute value of X derivative
 	abs_sobely = np.absolute(sobely) #Absolute value of Y derivative
 
-	r_binary = threshold(r, thresh=(215, 255))
-	b_binary = threshold(b, thresh=(150, 255))
+	r_binary = threshold(r, thresh=(180, 255))
+	b_binary = threshold(b, thresh=(155, 225))
+	h_binary = threshold(h, thresh=(10, 100))
+	l_binary = threshold(l, thresh=(220, 255))
 	s_binary = threshold(s, thresh=(90, 255))
 
-	#s_binary = s_threshold(s, thresh=(130, 255))
-	v_binary = v_threshold(v, thresh=(210, 255))
 	gradx = abs_sobel_thresh(abs_sobelx, abs_sobely, orient='x', thresh=(50, 255))
 	grady = abs_sobel_thresh(abs_sobelx, abs_sobely,  orient='y', thresh=(50, 255))
 	mag_binary = mag_thresh(sobelx, sobely, thresh=(75, 255))
 	dir_binary = dir_threshold(abs_sobelx, abs_sobely, thresh=(0.6, 1.3))
 
 	combined = np.zeros_like(dir_binary)
-	#combined[((gradx == 1) & (grady == 1)) | ((mag_binary == 1) & (dir_binary == 1)) | (v_binary == 1) | (s_binary == 1)] = 1
-	combined[((gradx==1) & (grady==1)) | (r_binary==1) | ((b_binary==1) & (s_binary==1))] = 1
-
+	combined[((gradx==1)&(grady==1)) | ((r_binary==1) & (h_binary==1) & (s_binary==1)) | (b_binary==1) | (l_binary==1)] = 1
+	
 	img_size = out.shape[1], out.shape[0]
 
 	offset = 100
-	offset2 = 200
 	midh = img_size[0]/2
 	topv = img_size[1]*(2/3)
 	src = np.float32([[offset, img_size[1]], [img_size[0]-offset, img_size[1]], [midh+offset, topv], [midh-offset, topv]])
-	dst = np.float32([[offset2, img_size[1]], [img_size[0]-offset2, img_size[1]], [img_size[0]-offset2, 0], [offset2, 0]])
+	dst = np.float32([[offset, img_size[1]], [img_size[0]-offset, img_size[1]], [img_size[0]-offset, 0], [offset, 0]])
 
 	#Perform perspective transform
 	M = cv2.getPerspectiveTransform(src, dst)
@@ -116,7 +118,7 @@ def process_img(img):
 	rightx_current = rightx_base
 
 	margin = 100
-	minpix = 50
+	minpix = 100 #50
 
 	left_lane_inds = []
 	right_lane_inds = []

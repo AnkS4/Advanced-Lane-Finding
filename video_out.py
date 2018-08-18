@@ -43,8 +43,8 @@ def threshold(ch, thresh=(0, 255)):
     binary[(ch > thresh[0]) & (ch <= thresh[1])] = 1
     return binary
 
+#Search lane from scratch using sliding windows
 def window_lane(warped, nonzeroy, nonzerox):
-	#print('Sliding window')
 	global lane_found, left_fit_old, right_fit_old
 
 	margin = 100
@@ -100,11 +100,6 @@ def window_lane(warped, nonzeroy, nonzerox):
 	left_fit = np.polyfit(lefty, leftx, 2)
 	right_fit = np.polyfit(righty, rightx, 2)
 
-	left_lane_inds = ((nonzerox > (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + left_fit[2] - margin)) & 
-		(nonzerox < (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + left_fit[2] + margin)))
-	right_lane_inds = ((nonzerox > (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + right_fit[2] - margin)) & 
-		(nonzerox < (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + right_fit[2] + margin)))
-
 	# Generate x and y values for plotting
 	ploty = np.linspace(0, warped.shape[0]-1, warped.shape[0])
 	left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
@@ -115,8 +110,8 @@ def window_lane(warped, nonzeroy, nonzerox):
 
 	return left_fit, left_fitx, right_fit, right_fitx
 
+#Search lane using previous lane
 def prev_lane(warped, nonzeroy, nonzerox):
-	#print('Previous Lane')
 	global lane_found, left_fit_old, right_fit_old
 	margin = 100
 
@@ -195,12 +190,10 @@ def process_img(img):
 	img_size = out.shape[1], out.shape[0]
 	ymax = img_size[0]-1
 
-	offset = 120
-	offset2 = 200
 	midh = img_size[0]/2
 	topv = img_size[1]*(2/3)
-	src = np.float32([[200, img_size[1]], [1150, img_size[1]], [760, topv], [560, topv]])
-	dst = np.float32([[offset2, img_size[1]], [img_size[0]-offset2, img_size[1]], [img_size[0]-offset2, 0], [offset2, 0]])
+	src = np.float32([(200, ymax), (580, midh), (720, midh), (1050, ymax-20)])
+	dst = np.float32([(280, ymax), (400, 290), (920, 290), (960, ymax)])
 	
 	#Perform perspective transform
 	M = cv2.getPerspectiveTransform(src, dst)
@@ -217,8 +210,6 @@ def process_img(img):
 	else:
 		left_fit, left_fitx, right_fit, right_fitx = prev_lane(warped, nonzeroy, nonzerox)
 
-	left_center = left_fit[0]*ymax**2 + left_fit[1]*ymax + left_fit[2]
-	right_center = right_fit[0]*ymax**2 + right_fit[1]*ymax + right_fit[2]
 	lane_center = np.mean((left_fitx + right_fitx)/2)
 	camera_center = img_size[0]/2
 	lane_distance = (camera_center - lane_center) * xm_per_pix
@@ -226,19 +217,10 @@ def process_img(img):
 	# Create an image to draw on and an image to show the selection window
 	out_img = np.dstack((warped, warped, warped))*255
 
-	leftx = left_fitx[::-1]  # Reverse to match top-to-bottom in y
-	rightx = right_fitx[::-1]  # Reverse to match top-to-bottom in y
-
 	ploty = np.linspace(0, warped.shape[0]-1, warped.shape[0])
-	# Fit a second order polynomial to pixel positions in each lane line
-	left_fit = np.polyfit(ploty, leftx, 2)
-	left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
-	right_fit = np.polyfit(ploty, rightx, 2)
-	right_fitx = right_fit[0]*ploty**2 + right_fit[1]*ploty + right_fit[2]
-
 	# Fit new polynomials to x,y in world space
-	left_fit_cr = np.polyfit(ploty*ym_per_pix, leftx*xm_per_pix, 2)
-	right_fit_cr = np.polyfit(ploty*ym_per_pix, rightx*xm_per_pix, 2)
+	left_fit_cr = np.polyfit(ploty*ym_per_pix, left_fitx*xm_per_pix, 2)
+	right_fit_cr = np.polyfit(ploty*ym_per_pix, right_fitx*xm_per_pix, 2)
 
 	y_eval = np.max(ploty)
 	# Calculate the new radii of curvature

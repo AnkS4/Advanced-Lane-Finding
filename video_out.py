@@ -153,8 +153,8 @@ def process_img(img):
 	dist = dist_pickle['dist']
 
     # Define conversions in x and y from pixels space to meters
-	ym_per_pix = 30/720 #320 # meters per pixel in y dimension
-	xm_per_pix = 3.7/700 # meters per pixel in x dimension
+	ym_per_pix = 30/720 # meters per pixel in y dimension
+	xm_per_pix = 3.7/710 # meters per pixel in x dimension
 	
 	out = cv2.undistort(img, mtx, dist, None, mtx)
 	
@@ -210,7 +210,9 @@ def process_img(img):
 	else:
 		left_fit, left_fitx, right_fit, right_fitx = prev_lane(warped, nonzeroy, nonzerox)
 
-	lane_center = np.mean((left_fitx + right_fitx)/2)
+	left_center = left_fit[0]*img_size[1]**2 + left_fit[1]*img_size[1] + left_fit[2]
+	right_center = right_fit[0]*img_size[1]**2 + right_fit[1]*img_size[1] + right_fit[2]
+	lane_center = (left_center + right_center)/2
 	camera_center = img_size[0]/2
 	lane_distance = (camera_center - lane_center) * xm_per_pix
 

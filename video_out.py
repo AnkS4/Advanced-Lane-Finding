@@ -210,9 +210,7 @@ def process_img(img):
 	else:
 		left_fit, left_fitx, right_fit, right_fitx = prev_lane(warped, nonzeroy, nonzerox)
 
-	left_center = left_fit[0]*img_size[1]**2 + left_fit[1]*img_size[1] + left_fit[2]
-	right_center = right_fit[0]*img_size[1]**2 + right_fit[1]*img_size[1] + right_fit[2]
-	lane_center = (left_center + right_center)/2
+	lane_center = (left_fitx + right_fitx)/2
 	camera_center = img_size[0]/2
 	lane_distance = (camera_center - lane_center) * xm_per_pix
 
